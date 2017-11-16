@@ -19,15 +19,11 @@ public class ServerSingleton {
 
     private ServerSingleton() { }
 
-    public void createConnection(String ipAddr, int port, String login, String psswd){
-        try{
+    public void createConnection(String ipAddr, int port, String login, String psswd) throws Exception{
             socket = new Socket(ipAddr, port);
             is = socket.getInputStream();
             os = socket.getOutputStream();
             System.out.println("Socket created, ip: "+ ipAddr + " port: " +port);
-        }catch(IOException ex){
-            ex.printStackTrace();
-        }
     }
 
     public void closeSocket(){

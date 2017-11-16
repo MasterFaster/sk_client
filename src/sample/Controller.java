@@ -28,30 +28,29 @@ public class Controller implements Initializable{
     public void initialize(URL location, ResourceBundle resources){
         ipTextField.setFocusTraversable(false);
         portTextField.setFocusTraversable(false);
-        ipTextField.setText("192.168.1.100");
+        ipTextField.setText("192.168.43.43");
         portTextField.setText("22580");
     }
 
     public void connectToServer() {
             System.out.println("Trying to connect...");
             ServerSingleton serverSingleton = ServerSingleton.getServerSingleton();
-            serverSingleton.createConnection(ipTextField.getText(),Integer.parseInt(portTextField.getText()), loginTextField.getText(), psswdTextField.getText());
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("MessageWindow.fxml"));
             try{
+                serverSingleton.createConnection(ipTextField.getText(),Integer.parseInt(portTextField.getText()), loginTextField.getText(), psswdTextField.getText());
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("conversationSelect.fxml"));
                 Parent root = (Parent)fxmlLoader.load();
-                MessageWindowController messageWindowController = fxmlLoader.getController();
-                messageWindowController.setFriendLogin("Serwer");
                 Stage stage = new Stage();
-                stage.setTitle("Messages");
+                stage.setTitle("Select conversation");
                 stage.initModality(Modality.APPLICATION_MODAL);
-                stage.initStyle(StageStyle.UNDECORATED);
+                stage.initStyle(StageStyle.DECORATED);
                 stage.setResizable(true);
                 stage.setScene(new Scene(root, 450, 600));
                 stage.showAndWait();
-            }catch(Exception ex){
+                serverSingleton.closeSocket();
+                System.out.println("socket closed");
+            }catch(Exception ex) {
                 System.out.println(ex);
             }
-            serverSingleton.closeSocket();
-            System.out.println("socket closed");
     }
 }
+

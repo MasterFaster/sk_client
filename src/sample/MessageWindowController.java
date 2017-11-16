@@ -58,6 +58,7 @@ public class MessageWindowController implements Initializable{
 
     public void updateHistoryTextField(String author, String message){
         historyTextField.appendText("\n" + author + " " +message);
+        //historyTextField.
         System.out.println("aktualizacja textFielda");
     }
 

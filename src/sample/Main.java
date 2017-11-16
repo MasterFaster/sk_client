@@ -21,6 +21,7 @@ public class Main extends Application {
 
     public static void main(String[] args) {
         ConversationSingleton.getConversationSingleton().addConversation(new Conversation("Serwer"));
+        ConversationSingleton.getConversationSingleton().addConversation(new Conversation("Student"));
         launch(args);
         ServerSingleton.getServerSingleton().closeSocket();
     }
