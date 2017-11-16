@@ -24,7 +24,7 @@ public class MessageWindowController implements Initializable{
     public TextArea historyTextField;
     public TextField msgTextField;
     private Socket socket;
-    private ReadMessageThread readMessageThread;
+    //private ReadMessageThread readMessageThread;
     private String friendLogin;
     private Conversation conversation;
 
@@ -52,8 +52,6 @@ public class MessageWindowController implements Initializable{
         for(Message msg : conversation.getHistory()){
             historyTextField.appendText("\n" +msg.getAuthor()+" " + msg.getMessage());
         }
-        readMessageThread = new ReadMessageThread();
-        readMessageThread.start();
     }
 
     public void updateHistoryTextField(String author, String message){
@@ -86,7 +84,7 @@ public class MessageWindowController implements Initializable{
     @FXML
     public void closeWindow(){
         Stage stage = (Stage) historyTextField.getScene().getWindow();
-        readMessageThread.stop();
+        //readMessageThread.stop();
         stage.close();
     }
 }

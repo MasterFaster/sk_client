@@ -26,8 +26,11 @@ public class conversationSelectController implements Initializable {
 
     public TableView loginTableView;
     private ObservableList<Conversation> conversationList;
+    private ReadMessageThread readMessageThread;
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        readMessageThread = new ReadMessageThread();
+        readMessageThread.start();
         TableColumn loginTableColumn = new TableColumn("Login");
         loginTableColumn.setCellValueFactory(new PropertyValueFactory<Conversation, String>("friendLogin"));
         conversationList = FXCollections.observableList(ConversationSingleton.getConversationSingleton().getConversationList());
@@ -42,6 +45,7 @@ public class conversationSelectController implements Initializable {
                     Parent root = (Parent)fxmlLoader.load();
                     MessageWindowController messageWindowController = fxmlLoader.getController();
                     messageWindowController.setFriendLogin(((Conversation)loginTableView.getSelectionModel().getSelectedItem()).getFriendLogin());
+                    readMessageThread.setConversationController(messageWindowController);
                     Stage stage = new Stage();
                     stage.setTitle("Messages");
                     stage.initModality(Modality.APPLICATION_MODAL);
