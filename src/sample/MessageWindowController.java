@@ -83,6 +83,10 @@ public class MessageWindowController implements Initializable{
         historyTextField.setText("");
     }
 
+    public void addMsg(Message msg){
+        historyTextField.appendText("\n" + msg.getAuthor() + ": " + msg.getMessage());
+    }
+
     public void readMsgs() {
         try {
             //byte[] buffer = new byte[100];

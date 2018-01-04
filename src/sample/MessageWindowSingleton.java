@@ -1,5 +1,6 @@
 package sample;
 
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -25,24 +26,31 @@ public class MessageWindowSingleton {
     }
 
     public void createMessageWindow(String friendLogin){
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("MessageWindow.fxml"));
-        try{
-            Parent root = (Parent)fxmlLoader.load();
-            MessageWindowController messageWindowController = fxmlLoader.getController();
-            messageWindowController.setFriendLogin(friendLogin);
-            messageWindowControllers.add(messageWindowController);
-            //readMessageThread.setConversationController(messageWindowController);
-            Stage stage = new Stage();
-            stage.setTitle("Messages");
-            //stage.initModality(Modality.APPLICATION_MODAL);
-            //stage.initStyle(StageStyle.UNDECORATED);
-            stage.initStyle(StageStyle.DECORATED);
-            stage.setResizable(true);
-            stage.setScene(new Scene(root, 450, 600));
-            stage.showAndWait();
-            System.out.println(stage);
-        }catch(Exception ex){
-            System.out.println(ex);
-        }
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                System.out.println("Creating new Message Window for: " + friendLogin);
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("MessageWindow.fxml"));
+                try {
+                    Parent root = (Parent) fxmlLoader.load();
+                    MessageWindowController messageWindowController = fxmlLoader.getController();
+                    messageWindowController.setFriendLogin(friendLogin);
+                    messageWindowControllers.add(messageWindowController);
+                    //readMessageThread.setConversationController(messageWindowController);
+                    Stage stage = new Stage();
+                    stage.setTitle("Messages");
+                    //stage.initModality(Modality.APPLICATION_MODAL);
+                    //stage.initStyle(StageStyle.UNDECORATED);
+                    stage.initStyle(StageStyle.DECORATED);
+                    stage.setResizable(true);
+                    stage.setScene(new Scene(root, 450, 600));
+                    stage.showAndWait();
+                    messageWindowControllers.remove(messageWindowController);
+                    System.out.println(stage);
+                } catch (Exception ex) {
+                    System.out.println(ex);
+                }
+            }
+        });
     }
 }

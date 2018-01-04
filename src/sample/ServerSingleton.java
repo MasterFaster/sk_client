@@ -61,7 +61,7 @@ public class ServerSingleton {
 
     public void sendMessage(String message, String login){
         try {
-            message = "01"+login+";"+message;
+            message = "01"+login+";"+message+"\n";
             os.write(message.getBytes());
             System.out.println("message is send");
         }catch(IOException ex){
@@ -90,17 +90,19 @@ public class ServerSingleton {
                 inputMsg = inputMsg.substring(inputMsg.indexOf(";")+1, inputMsg.length());
                 System.out.println(inputMsg);
                 try{
+                    Message actualMessage = new Message(incomingLogin, inputMsg);
                     Conversation conversation = ConversationSingleton.getConversationSingleton().getConversationList().stream()
                             .filter(con -> con.getFriendLogin().equals(incomingLogin))
                             .findFirst().get();
-                    conversation.getHistory().add(new Message(incomingLogin,inputMsg));
+                    conversation.getHistory().add(actualMessage);
                     boolean ifMessageWindowControllerFound = false;
                     for(MessageWindowController messageWindowController : MessageWindowSingleton.getMessageWindowSingleton().getMessageWindowControllers()){
                         if(messageWindowController.getFriendLogin().equals(incomingLogin)){
-                            messageWindowController.readMsgs();
+                            messageWindowController.addMsg(actualMessage);
                             ifMessageWindowControllerFound = true;
                         }
                     }
+                    System.out.println("IF MESSAGEWINDOWCONTROLLER FOUND: " + ifMessageWindowControllerFound);
                     if(!ifMessageWindowControllerFound){
                         MessageWindowSingleton.getMessageWindowSingleton().createMessageWindow(incomingLogin);
                     }

@@ -1,6 +1,7 @@
 package sample;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -18,6 +19,7 @@ public class Main extends Application {
 
 
     public static void main(String[] args) {
+        //Platform.setImplicitExit(false);
         ConversationSingleton.getConversationSingleton().addConversation(new Conversation("Serwer"));
         ConversationSingleton.getConversationSingleton().addConversation(new Conversation("jackon"));
         ConversationSingleton.getConversationSingleton().addConversation(new Conversation("kacol"));
