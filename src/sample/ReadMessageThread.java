@@ -15,13 +15,13 @@ import static java.lang.Thread.sleep;
  */
 public class ReadMessageThread extends Thread {
 
-    private MessageWindowController messageWindowController = null;
+    //private MessageWindowController messageWindowController = null;
 
     public ReadMessageThread(){
     }
 
     public void setConversationController(MessageWindowController messageWindowController){
-        this.messageWindowController = messageWindowController;
+        //this.messageWindowController = messageWindowController;
     }
 
     @Override

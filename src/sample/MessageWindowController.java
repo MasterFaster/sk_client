@@ -1,5 +1,8 @@
 package sample;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -39,6 +42,12 @@ public class MessageWindowController implements Initializable{
         }catch(Exception ex){
             ex.printStackTrace();
         }
+
+        readMsgs(); //???
+//        ObservableList<Message> history = FXCollections.observableArrayList(conversation.getHistory());
+//        history.addListener((ListChangeListener.Change<? extends Message> c) ->{
+//            readMsgs();
+//        });
     }
 
     public void setFriendLogin(String friendLogin){
@@ -54,6 +63,10 @@ public class MessageWindowController implements Initializable{
         }
     }
 
+    public String getFriendLogin(){
+        return friendLogin;
+    }
+
     public void updateHistoryTextField(String author, String message){
         historyTextField.appendText("\n" + author + " " +message);
         //historyTextField.
@@ -63,7 +76,7 @@ public class MessageWindowController implements Initializable{
     public void sendMsg() {
         ServerSingleton.getServerSingleton().sendMessage(msgTextField.getText(),friendLogin);
         historyTextField.appendText("\n"+"me " +msgTextField.getText());
-        conversation.getHistory().add(new Message("me", msgTextField.getText()));
+        conversation.getHistory().add(new Message("me: ", msgTextField.getText()));
     }
 
     public void clearMsgs() {

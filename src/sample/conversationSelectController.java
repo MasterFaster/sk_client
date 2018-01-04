@@ -40,23 +40,8 @@ public class conversationSelectController implements Initializable {
             @Override
             public void handle(MouseEvent event) {
                 //System.out.println(((Conversation)loginTableView.getSelectionModel().getSelectedItem()).getFriendLogin());
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("MessageWindow.fxml"));
-                try{
-                    Parent root = (Parent)fxmlLoader.load();
-                    MessageWindowController messageWindowController = fxmlLoader.getController();
-                    messageWindowController.setFriendLogin(((Conversation)loginTableView.getSelectionModel().getSelectedItem()).getFriendLogin());
-                    readMessageThread.setConversationController(messageWindowController);
-                    Stage stage = new Stage();
-                    stage.setTitle("Messages");
-                    stage.initModality(Modality.APPLICATION_MODAL);
-                    //stage.initStyle(StageStyle.UNDECORATED);
-                    stage.initStyle(StageStyle.DECORATED);
-                    stage.setResizable(true);
-                    stage.setScene(new Scene(root, 450, 600));
-                    stage.showAndWait();
-                }catch(Exception ex){
-                    System.out.println(ex);
-                }
+                MessageWindowSingleton.getMessageWindowSingleton()
+                        .createMessageWindow(((Conversation)loginTableView.getSelectionModel().getSelectedItem()).getFriendLogin());
             }
         });
     }

@@ -74,7 +74,7 @@ public class ServerSingleton {
             return -1;
         }
         int bytes = -1;
-        String incomingLogin = "";
+
         try{
             bytes = is.read(buffer);
             String inputMsg = new String(buffer);
@@ -85,26 +85,31 @@ public class ServerSingleton {
                 System.out.println("Logging failed");
             }
             if(inputMsg.substring(0,2).equals("02")){    //incoming message from someone
-                incomingLogin = inputMsg.substring(2,inputMsg.indexOf(";"));
+                String incomingLogin = inputMsg.substring(2,inputMsg.indexOf(";"));
                 System.out.println("msg from: " + incomingLogin);
                 inputMsg = inputMsg.substring(inputMsg.indexOf(";")+1, inputMsg.length());
                 System.out.println(inputMsg);
+                try{
+                    Conversation conversation = ConversationSingleton.getConversationSingleton().getConversationList().stream()
+                            .filter(con -> con.getFriendLogin().equals(incomingLogin))
+                            .findFirst().get();
+                    conversation.getHistory().add(new Message(incomingLogin,inputMsg));
+                    boolean ifMessageWindowControllerFound = false;
+                    for(MessageWindowController messageWindowController : MessageWindowSingleton.getMessageWindowSingleton().getMessageWindowControllers()){
+                        if(messageWindowController.getFriendLogin().equals(incomingLogin)){
+                            messageWindowController.readMsgs();
+                            ifMessageWindowControllerFound = true;
+                        }
+                    }
+                    if(!ifMessageWindowControllerFound){
+                        MessageWindowSingleton.getMessageWindowSingleton().createMessageWindow(incomingLogin);
+                    }
+                }catch(NoSuchElementException ex){
+                    ex.printStackTrace();
+                }
             }
-            String finalIncomingLogin = incomingLogin;
-            try{
-                Conversation conversation = ConversationSingleton.getConversationSingleton().getConversationList().stream()
-                        .filter(con -> con.getFriendLogin().equals(finalIncomingLogin))
-                        .findFirst().get();
-                conversation.getHistory().add(new Message(finalIncomingLogin,inputMsg));
-            }catch(NoSuchElementException ex){
-                ex.printStackTrace();
-            }
-//            for(Conversation con : ConversationSingleton.getConversationSingleton().getConversationList()){
-//                if(con.getFriendLogin().equals("Serwer")){
-//                    con.getHistory().add(new Message("Serwer",new String(buffer)));
-//                    break;
-//                }
-//            }
+
+
         }catch(SocketTimeoutException ex){
             //ex.printStackTrace();
         }catch(Exception ex){
