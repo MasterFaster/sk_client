@@ -49,7 +49,8 @@ public class conversationSelectController implements Initializable {
                     Stage stage = new Stage();
                     stage.setTitle("Messages");
                     stage.initModality(Modality.APPLICATION_MODAL);
-                    stage.initStyle(StageStyle.UNDECORATED);
+                    //stage.initStyle(StageStyle.UNDECORATED);
+                    stage.initStyle(StageStyle.DECORATED);
                     stage.setResizable(true);
                     stage.setScene(new Scene(root, 450, 600));
                     stage.showAndWait();

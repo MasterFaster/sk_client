@@ -72,11 +72,17 @@ public class MessageWindowController implements Initializable{
 
     public void readMsgs() {
         try {
-            byte[] buffer = new byte[100];
-            int byteNumber = is.read(buffer);
-            String serverMessage = new String(buffer);
-            historyTextField.appendText("\n" + serverMessage);
-        }catch(IOException ex){
+            //byte[] buffer = new byte[100];
+            //int byteNumber = is.read(buffer);
+            //String serverMessage = new String(buffer);
+            for(Conversation conversation : ConversationSingleton.getConversationSingleton().getConversationList()){
+                if(conversation.getFriendLogin().equals(friendLogin)){
+                    for(Message msg : conversation.getHistory()){
+                        historyTextField.appendText("\n" + msg.getAuthor() + ": " + msg.getMessage());
+                    }
+                }
+            }
+        }catch(Exception ex){
             ex.printStackTrace();
         }
     }

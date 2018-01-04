@@ -38,6 +38,9 @@ public class ReadMessageThread extends Thread {
         System.out.println("Reading message thread is running");
         String serverMessage="";
         while (true) {
+            if(!ServerSingleton.getServerSingleton().getSocketOpen()){
+                break;
+            }
             byte[] buffer = new byte[100];
             int byteNumber = ServerSingleton.getServerSingleton().getMessage(buffer);
             //historyTextField.appendText("\n" + serverMessage);
@@ -45,7 +48,7 @@ public class ReadMessageThread extends Thread {
             if(byteNumber != -1) {
                 serverMessage = new String(buffer);
                 System.out.println(serverMessage);
-                messageWindowController.updateHistoryTextField("Serwer",serverMessage);
+                //messageWindowController.updateHistoryTextField("Serwer",serverMessage);
             }
         }
     }
