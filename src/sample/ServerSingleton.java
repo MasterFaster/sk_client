@@ -37,13 +37,39 @@ public class ServerSingleton {
         }
     }
 
-    public void closeSocket(){
-        System.out.println("Closing socket...");
-        socketOpen = false;
+    /**
+     * function runs when user want to create account
+     * @param ipAddr    socket ip address
+     * @param port  socket port
+     * @param login new account login
+     * @param psswd new account password
+     */
+    public void createAccount(String ipAddr, int port, String login, String psswd){
         try {
+            socket = new Socket(ipAddr, port);
+            socketOpen = true;
+            is = socket.getInputStream();
+            os = socket.getOutputStream();
+            System.out.println("Socket created, ip: "+ ipAddr + " port: " +port);
+            String message = "03"+login+";"+psswd+";";
+            os.write(message.getBytes());
+            System.out.println("message is send");
             socket.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+        }catch(IOException ex){
+            socketOpen = false;
+            ex.printStackTrace();
+        }
+    }
+
+    public void closeSocket(){
+        if(socketOpen) {
+            System.out.println("Closing socket...");
+            socketOpen = false;
+            try {
+                socket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 

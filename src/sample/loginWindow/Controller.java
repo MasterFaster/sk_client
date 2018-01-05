@@ -2,6 +2,7 @@ package sample.loginWindow;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
@@ -21,10 +22,13 @@ import java.util.ResourceBundle;
 
 public class Controller implements Initializable{
 
-
+    @FXML
     public TextField portTextField;
+    @FXML
     public TextField ipTextField;
+    @FXML
     public TextField loginTextField;
+    @FXML
     public TextField psswdTextField;
 
     @Override
@@ -38,6 +42,7 @@ public class Controller implements Initializable{
     /**
      * action when "Connect" button is pressed
      */
+    @FXML
     public void connectToServer() {
             System.out.println("Trying to connect...");
             ServerSingleton serverSingleton = ServerSingleton.getServerSingleton();
@@ -63,6 +68,26 @@ public class Controller implements Initializable{
             }catch(Exception ex) {
                 System.out.println(ex);
             }
+    }
+
+    /**
+     * action when "Create Account" button is pressed
+     */
+    @FXML
+    public void createAccount(){
+        try{
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../creatingAccountWindow/creatingAccountWindow.fxml"));
+            Parent root = (Parent)fxmlLoader.load();
+            Stage stage = new Stage();
+            stage.setTitle("Creating new account");
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.initStyle(StageStyle.UNDECORATED);
+            stage.setResizable(false);
+            stage.setScene(new Scene(root, 300, 275));
+            stage.showAndWait();
+        }catch(Exception ex) {
+            ex.printStackTrace();
+        }
     }
 }
 
