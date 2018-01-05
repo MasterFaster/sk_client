@@ -1,4 +1,4 @@
-package sample;
+package sample.Conversation;
 
 import java.util.ArrayList;
 

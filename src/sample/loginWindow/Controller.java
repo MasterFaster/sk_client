@@ -1,6 +1,5 @@
 package sample.loginWindow;
 
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,11 +11,8 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
-import sample.ServerSingleton;
+import sample.ServerConnection.ServerSingleton;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.net.Socket;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -48,7 +44,7 @@ public class Controller implements Initializable{
             ServerSingleton serverSingleton = ServerSingleton.getServerSingleton();
             try{
                 serverSingleton.createConnection(ipTextField.getText(),Integer.parseInt(portTextField.getText()), loginTextField.getText(), psswdTextField.getText());
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../conversationSelect.fxml"));
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../conversationSelectWindow/conversationSelect.fxml"));
                 Parent root = (Parent)fxmlLoader.load();
                 Stage stage = new Stage();
                 stage.setTitle(loginTextField.getText()+ " select conversation");

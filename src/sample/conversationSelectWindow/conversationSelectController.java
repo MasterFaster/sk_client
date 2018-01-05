@@ -1,19 +1,17 @@
-package sample;
+package sample.conversationSelectWindow;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
+import sample.Conversation.Conversation;
+import sample.Conversation.ConversationSingleton;
+import sample.MessageWindow.MessageWindowSingleton;
+import sample.ServerConnection.ReadMessageThread;
 
 import java.net.URL;
 import java.util.ResourceBundle;

@@ -1,4 +1,10 @@
-package sample;
+package sample.ServerConnection;
+
+import sample.Conversation.Conversation;
+import sample.Conversation.ConversationSingleton;
+import sample.Conversation.Message;
+import sample.MessageWindow.MessageWindowController;
+import sample.MessageWindow.MessageWindowSingleton;
 
 import java.io.IOException;
 import java.io.InputStream;

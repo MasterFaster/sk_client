@@ -1,16 +1,14 @@
-package sample;
+package sample.MessageWindow;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
-import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
+import sample.Conversation.Conversation;
+import sample.Conversation.ConversationSingleton;
+import sample.Conversation.Message;
+import sample.ServerConnection.ServerSingleton;
 
 import java.io.*;
 import java.net.Socket;

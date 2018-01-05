@@ -1,12 +1,9 @@
-package sample;
+package sample.ServerConnection;
 
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
+import sample.MessageWindow.MessageWindowController;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.Socket;
-import java.net.SocketTimeoutException;
 
 import static java.lang.Thread.sleep;
 

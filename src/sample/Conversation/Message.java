@@ -1,4 +1,4 @@
-package sample;
+package sample.Conversation;
 
 /**
  * Created by Master Faster on 15.11.2017.

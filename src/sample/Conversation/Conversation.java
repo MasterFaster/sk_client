@@ -1,8 +1,6 @@
-package sample;
+package sample.Conversation;
 
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import java.util.*;
 
 /**
