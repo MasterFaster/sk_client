@@ -24,6 +24,8 @@ public class ServerSingleton {
     private InputStream is;
     private OutputStream os;
     private boolean socketOpen = false;
+    private boolean isLogged = false;
+    private ReadMessageThread readMessageThread;
 
     private ServerSingleton() { }
 
@@ -36,7 +38,10 @@ public class ServerSingleton {
         try {
             String message = "00"+login+";"+psswd+";";
             os.write(message.getBytes());
-            System.out.println("message is send");
+            System.out.println("Sending login and password...");
+            System.out.println("Waiting for answer if logging is completed");
+            byte[] buffer = new byte[100];
+            getMessage(buffer);
         }catch(IOException ex){
             socketOpen = false;
             ex.printStackTrace();
@@ -61,6 +66,7 @@ public class ServerSingleton {
             os.write(message.getBytes());
             System.out.println("message is send");
             socket.close();
+            socketOpen = false;
         }catch(IOException ex){
             socketOpen = false;
             ex.printStackTrace();
@@ -68,6 +74,7 @@ public class ServerSingleton {
     }
 
     public void closeSocket(){
+        isLogged = false;
         if(socketOpen) {
             System.out.println("Closing socket...");
             socketOpen = false;
@@ -83,12 +90,25 @@ public class ServerSingleton {
         return socketOpen;
     }
 
+    public boolean getIsLogged(){
+        return isLogged;
+    }
+
     public static ServerSingleton getServerSingleton(){
         return serverSingleton;
     }
 
     public Socket getSocket(){
         return socket;
+    }
+
+    public void startReadMessageThread(){
+        readMessageThread = new ReadMessageThread();
+        readMessageThread.start();
+    }
+
+    public void stopReadMessageThread(){
+        readMessageThread.stop();
     }
 
     public void sendMessage(String message, String login){
@@ -115,9 +135,11 @@ public class ServerSingleton {
             String inputMsg = new String(buffer);
 
             if(inputMsg.substring(0,2).equals("04")){    //information if login is successful
+                isLogged = true;
                 System.out.println("Logging successful");
             }
             if(inputMsg.substring(0,2).equals("05")){    //information if login is successful
+                isLogged = false;
                 System.out.println("Logging failed");
             }
             if(inputMsg.substring(0,2).equals("02")){    //incoming message from someone
@@ -126,26 +148,30 @@ public class ServerSingleton {
                 inputMsg = inputMsg.substring(inputMsg.indexOf(";")+1, inputMsg.length());
                 inputMsg = inputMsg.replace("\n","");
                 System.out.println(inputMsg);
+                Conversation conversation = new Conversation();
+                Message actualMessage = new Message(incomingLogin, inputMsg);
                 try{
-                    Message actualMessage = new Message(incomingLogin, inputMsg);
-                    Conversation conversation = ConversationSingleton.getConversationSingleton().getConversationList().stream()
+                    conversation = ConversationSingleton.getConversationSingleton().getConversationList().stream()
                             .filter(con -> con.getFriendLogin().equals(incomingLogin))
                             .findFirst().get();
-                    conversation.getHistory().add(actualMessage);
-                    boolean ifMessageWindowControllerFound = false;
-                    for(MessageWindowController messageWindowController : MessageWindowSingleton.getMessageWindowSingleton().getMessageWindowControllers()){
-                        if(messageWindowController.getFriendLogin().equals(incomingLogin)){
-                            messageWindowController.addMsg(actualMessage);
-                            ifMessageWindowControllerFound = true;
-                        }
-                    }
-                    System.out.println("IF MESSAGEWINDOWCONTROLLER FOUND: " + ifMessageWindowControllerFound);
-                    if(!ifMessageWindowControllerFound){
-                        MessageWindowSingleton.getMessageWindowSingleton().createMessageWindow(incomingLogin);
-                    }
                 }catch(NoSuchElementException ex){
-                    ex.printStackTrace();
+                    conversation.setFriendLogin(incomingLogin);
+                    ConversationSingleton.getConversationSingleton().addConversation(conversation);
+                    //ex.printStackTrace();
                 }
+                conversation.getHistory().add(actualMessage);
+                boolean ifMessageWindowControllerFound = false;
+                for(MessageWindowController messageWindowController : MessageWindowSingleton.getMessageWindowSingleton().getMessageWindowControllers()){
+                    if(messageWindowController.getFriendLogin().equals(incomingLogin)){
+                        messageWindowController.addMsg(actualMessage);
+                        ifMessageWindowControllerFound = true;
+                    }
+                }
+                System.out.println("IF MESSAGEWINDOWCONTROLLER FOUND: " + ifMessageWindowControllerFound);
+                if(!ifMessageWindowControllerFound){
+                    MessageWindowSingleton.getMessageWindowSingleton().createMessageWindow(incomingLogin);
+                }
+
             }
 
 

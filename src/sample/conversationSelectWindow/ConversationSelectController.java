@@ -22,20 +22,20 @@ import java.util.ResourceBundle;
 /**
  * Created by Master Faster on 16.11.2017.
  */
-public class conversationSelectController implements Initializable {
+public class ConversationSelectController implements Initializable {
 
     @FXML
     public TableView loginTableView;
     @FXML
     public TextField newFriendTextField;
     private ObservableList<Conversation> conversationList;
-    private ReadMessageThread readMessageThread;
+    //private ReadMessageThread readMessageThread;
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        readMessageThread = new ReadMessageThread();
-        readMessageThread.start();
+        //readMessageThread = new ReadMessageThread();
+        //readMessageThread.start();
 
-        TableColumn loginTableColumn = new TableColumn("Login");
+        TableColumn loginTableColumn = new TableColumn("Friends");
         loginTableColumn.setCellValueFactory(new PropertyValueFactory<Conversation, String>("friendLogin"));
 
 
@@ -62,6 +62,13 @@ public class conversationSelectController implements Initializable {
             conversationList = FXCollections.observableList(ConversationSingleton.getConversationSingleton().getConversationList());
             loginTableView.setItems(conversationList);
         }
+        conversationList = FXCollections.observableList(ConversationSingleton.getConversationSingleton().getConversationList());
+        loginTableView.setItems(conversationList);
+    }
+
+
+    public void stopReadingThread(){
+        //readMessageThread.stop();
     }
 
 }

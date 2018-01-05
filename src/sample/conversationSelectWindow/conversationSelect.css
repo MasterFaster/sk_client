@@ -22,10 +22,28 @@
     */
     -fx-background-image: url("background1.jpg");
 }
+.table-view .column-header-background{
+    -fx-background-color: transparent;
+}
+.table-view > .column-header-background > .filler {
+    -fx-background-color: transparent;
+}
+
+.table-view > .column-header-background > .nested-column-header > .column-header.table-column {
+    -fx-background-color: transparent;
+
+}
+.table-view > .column-header-background > .nested-column-header > .column-header.table-column > .label > .text {
+    -fx-font-size: 25px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333333;
+    -fx-effect: dropshadow( gaussian , rgba(255,255,255,0.5) , 0,0,0,1 );
+}
 .table-row-cell
 {
     -fx-background-color: transparent;
 }
+
 .table-row-cell .text {
     -fx-fill: black;
     -fx-font-size: 30;

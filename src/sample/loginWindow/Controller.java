@@ -8,6 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -16,6 +17,7 @@ import sample.Conversation.Conversation;
 import sample.Conversation.ConversationSingleton;
 import sample.MessageWindow.MessageWindowSingleton;
 import sample.ServerConnection.ServerSingleton;
+import sample.conversationSelectWindow.ConversationSelectController;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -47,32 +49,39 @@ public class Controller implements Initializable{
     public void connectToServer() {
             System.out.println("Trying to connect...");
             ServerSingleton serverSingleton = ServerSingleton.getServerSingleton();
-            ConversationSingleton.getConversationSingleton().addConversation(new Conversation("Serwer"));
-            ConversationSingleton.getConversationSingleton().addConversation(new Conversation("jackon"));
-            ConversationSingleton.getConversationSingleton().addConversation(new Conversation("kacol"));
-            ConversationSingleton.getConversationSingleton().addConversation(new Conversation("elo"));
             try{
                 serverSingleton.createConnection(ipTextField.getText(),Integer.parseInt(portTextField.getText()), loginTextField.getText(), psswdTextField.getText());
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../conversationSelectWindow/conversationSelect.fxml"));
-                Parent root = (Parent)fxmlLoader.load();
-                Stage stage = new Stage();
-                stage.setTitle(loginTextField.getText()+ " select conversation");
-                stage.initModality(Modality.APPLICATION_MODAL);
-                stage.initStyle(StageStyle.DECORATED);
-                stage.setResizable(true);
-                Scene scene = new Scene(root, 400, 400);
-                scene.getStylesheets().add(getClass().getResource("../conversationSelectWindow/conversationSelect.css").toExternalForm());
-                stage.setScene(scene);
-                stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-                    public void handle(WindowEvent we) {
-                        System.out.println("Stage is closing");
-                        serverSingleton.closeSocket();
-                        System.out.println("socket closed");
-                        ConversationSingleton.getConversationSingleton().setConversationList(new ArrayList<Conversation>());
-                        MessageWindowSingleton.getMessageWindowSingleton().closeMessageWindows();
-                    }
-                });
-                stage.showAndWait();
+                if(serverSingleton.getIsLogged()) {
+                    ConversationSingleton.getConversationSingleton().addConversation(new Conversation("Serwer"));
+                    ConversationSingleton.getConversationSingleton().addConversation(new Conversation("jackon"));
+                    ConversationSingleton.getConversationSingleton().addConversation(new Conversation("kacol"));
+                    ConversationSingleton.getConversationSingleton().addConversation(new Conversation("elo"));
+                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../conversationSelectWindow/conversationSelect.fxml"));
+                    ConversationSelectController conversationSelectController = fxmlLoader.getController();
+                    Parent root = (Parent) fxmlLoader.load();
+                    Stage stage = new Stage();
+                    Image icon = new Image("sample/conversationSelectWindow/selectFriendIcon.png");
+                    stage.getIcons().add(icon);
+                    stage.setTitle("Logged as: " + loginTextField.getText());
+                    stage.initModality(Modality.APPLICATION_MODAL);
+                    stage.initStyle(StageStyle.DECORATED);
+                    stage.setResizable(true);
+                    Scene scene = new Scene(root, 400, 400);
+                    scene.getStylesheets().add(getClass().getResource("../conversationSelectWindow/conversationSelect.css").toExternalForm());
+                    stage.setScene(scene);
+                    stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+                        public void handle(WindowEvent we) {
+                            System.out.println("Stage is closing");
+                            serverSingleton.closeSocket();
+                            serverSingleton.stopReadMessageThread();
+                            System.out.println("socket closed");
+                            ConversationSingleton.getConversationSingleton().setConversationList(new ArrayList<Conversation>());
+                            MessageWindowSingleton.getMessageWindowSingleton().closeMessageWindows();
+                        }
+                    });
+                    serverSingleton.startReadMessageThread();
+                    stage.showAndWait();
+                }
             }catch(Exception ex) {
                 System.out.println(ex);
             }
@@ -88,6 +97,8 @@ public class Controller implements Initializable{
             Parent root = (Parent)fxmlLoader.load();
             Stage stage = new Stage();
             stage.setTitle("Creating new account");
+            Image icon = new Image("sample/creatingAccountWindow/creatingAccountIcon.png");
+            stage.getIcons().add(icon);
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.initStyle(StageStyle.DECORATED);
             stage.setResizable(false);

@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -39,6 +40,8 @@ public class MessageWindowSingleton {
                     //readMessageThread.setConversationController(messageWindowController);
                     Stage stage = new Stage();
                     stage.setTitle("Messages");
+                    Image icon = new Image("sample/MessageWindow/conversationIcon.png");
+                    stage.getIcons().add(icon);
                     //stage.initModality(Modality.APPLICATION_MODAL);
                     //stage.initStyle(StageStyle.UNDECORATED);
                     stage.initStyle(StageStyle.DECORATED);
