@@ -15,7 +15,10 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("loginWindow/sample.fxml"));
         primaryStage.setTitle("Login window");
-        primaryStage.setScene(new Scene(root, 300, 275));
+        Scene scene =new Scene(root, 300, 275);
+        scene.getStylesheets().add(getClass().getResource("loginWindow/login.css").toExternalForm());
+        primaryStage.setScene(scene);
+        primaryStage.setResizable(false);
         primaryStage.show();
     }
 

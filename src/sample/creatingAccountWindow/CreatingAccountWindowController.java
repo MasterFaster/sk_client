@@ -2,6 +2,7 @@ package sample.creatingAccountWindow;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import sample.ServerConnection.ServerSingleton;
@@ -16,9 +17,9 @@ public class CreatingAccountWindowController {
     @FXML
     public TextField loginTextField;
     @FXML
-    public TextField psswdTextField;
+    public PasswordField psswdTextField;
     @FXML
-    public TextField psswdSecTextField;
+    public PasswordField psswdSecTextField;
 
 
     @FXML

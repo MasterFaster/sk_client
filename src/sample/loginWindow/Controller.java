@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -25,7 +26,7 @@ public class Controller implements Initializable{
     @FXML
     public TextField loginTextField;
     @FXML
-    public TextField psswdTextField;
+    public PasswordField psswdTextField;
 
     @Override
     public void initialize(URL location, ResourceBundle resources){
@@ -77,9 +78,11 @@ public class Controller implements Initializable{
             Stage stage = new Stage();
             stage.setTitle("Creating new account");
             stage.initModality(Modality.APPLICATION_MODAL);
-            stage.initStyle(StageStyle.UNDECORATED);
+            stage.initStyle(StageStyle.DECORATED);
             stage.setResizable(false);
-            stage.setScene(new Scene(root, 300, 275));
+            Scene scene =new Scene(root, 300, 275);
+            scene.getStylesheets().add(getClass().getResource("../creatingAccountWindow/creatingAccount.css").toExternalForm());
+            stage.setScene(scene);
             stage.showAndWait();
         }catch(Exception ex) {
             ex.printStackTrace();

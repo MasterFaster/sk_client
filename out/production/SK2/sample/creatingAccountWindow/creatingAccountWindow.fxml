@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
@@ -7,6 +8,15 @@
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="543.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.creatingAccountWindow.CreatingAccountWindowController">
    <children>
+      <HBox alignment="CENTER" prefHeight="78.0" prefWidth="543.0">
+         <children>
+            <Label id="createNewAccount-text" text="Creating new account">
+               <font>
+                  <Font name="Arial" size="22.0" />
+               </font>
+            </Label>
+         </children>
+      </HBox>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
          <children>
             <Label text="IP:" />
@@ -28,13 +38,13 @@
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
          <children>
             <Label text="New Password" />
-            <TextField fx:id="psswdTextField" />
+            <PasswordField fx:id="psswdTextField" />
          </children>
       </HBox>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
          <children>
             <Label text="New Password" />
-            <TextField fx:id="psswdSecTextField" />
+            <PasswordField fx:id="psswdSecTextField" />
          </children>
       </HBox>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
