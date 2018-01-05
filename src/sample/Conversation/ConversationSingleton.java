@@ -21,4 +21,8 @@ public class ConversationSingleton {
     public ArrayList<Conversation> getConversationList(){
         return conversationList;
     }
+
+    public void setConversationList(ArrayList<Conversation> conversationList){
+        this.conversationList = conversationList;
+    }
 }

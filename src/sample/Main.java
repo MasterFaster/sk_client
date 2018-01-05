@@ -25,11 +25,7 @@ public class Main extends Application {
 
     public static void main(String[] args) {
         //Platform.setImplicitExit(false);
-        ConversationSingleton.getConversationSingleton().addConversation(new Conversation("Serwer"));
-        ConversationSingleton.getConversationSingleton().addConversation(new Conversation("jackon"));
-        ConversationSingleton.getConversationSingleton().addConversation(new Conversation("kacol"));
-        ConversationSingleton.getConversationSingleton().addConversation(new Conversation("elo"));
         launch(args);
-        ServerSingleton.getServerSingleton().closeSocket();
+        //ServerSingleton.getServerSingleton().closeSocket();
     }
 }

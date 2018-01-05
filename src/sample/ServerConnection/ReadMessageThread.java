@@ -42,11 +42,11 @@ public class ReadMessageThread extends Thread {
             int byteNumber = ServerSingleton.getServerSingleton().getMessage(buffer);
             //historyTextField.appendText("\n" + serverMessage);
             //System.out.println(byteNumber);
-            if(byteNumber != -1) {
-                serverMessage = new String(buffer);
-                System.out.println(serverMessage);
+           // if(byteNumber != -1) {
+                //serverMessage = new String(buffer);
+                //System.out.println("*" + serverMessage + "*");
                 //messageWindowController.updateHistoryTextField("Serwer",serverMessage);
-            }
+            //}
         }
     }
 }

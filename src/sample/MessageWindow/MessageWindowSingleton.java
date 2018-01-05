@@ -24,7 +24,7 @@ public class MessageWindowSingleton {
         return messageWindowControllers;
     }
 
-    public void createMessageWindow(String friendLogin){
+    public void createMessageWindow(String friendLogin) {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
@@ -34,6 +34,7 @@ public class MessageWindowSingleton {
                     Parent root = (Parent) fxmlLoader.load();
                     MessageWindowController messageWindowController = fxmlLoader.getController();
                     messageWindowController.setFriendLogin(friendLogin);
+                    messageWindowController.friendNameLabel.setText(friendLogin);
                     messageWindowControllers.add(messageWindowController);
                     //readMessageThread.setConversationController(messageWindowController);
                     Stage stage = new Stage();
@@ -42,7 +43,9 @@ public class MessageWindowSingleton {
                     //stage.initStyle(StageStyle.UNDECORATED);
                     stage.initStyle(StageStyle.DECORATED);
                     stage.setResizable(true);
-                    stage.setScene(new Scene(root, 450, 600));
+                    Scene scene = new Scene(root, 300, 350);
+                    scene.getStylesheets().add(getClass().getResource("messageWindow.css").toExternalForm());
+                    stage.setScene(scene);
                     stage.showAndWait();
                     messageWindowControllers.remove(messageWindowController);
                     System.out.println(stage);
@@ -52,4 +55,10 @@ public class MessageWindowSingleton {
             }
         });
     }
+    public void closeMessageWindows() {
+        for(MessageWindowController controller : messageWindowControllers){
+            controller.closeWindow();
+        }
+    }
+
 }

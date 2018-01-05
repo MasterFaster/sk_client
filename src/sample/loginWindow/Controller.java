@@ -12,9 +12,13 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
+import sample.Conversation.Conversation;
+import sample.Conversation.ConversationSingleton;
+import sample.MessageWindow.MessageWindowSingleton;
 import sample.ServerConnection.ServerSingleton;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class Controller implements Initializable{
@@ -32,7 +36,7 @@ public class Controller implements Initializable{
     public void initialize(URL location, ResourceBundle resources){
         ipTextField.setFocusTraversable(false);
         portTextField.setFocusTraversable(false);
-        ipTextField.setText("25.85.97.88");
+        ipTextField.setText("192.168.1.117");
         portTextField.setText("22580");
     }
 
@@ -43,6 +47,10 @@ public class Controller implements Initializable{
     public void connectToServer() {
             System.out.println("Trying to connect...");
             ServerSingleton serverSingleton = ServerSingleton.getServerSingleton();
+            ConversationSingleton.getConversationSingleton().addConversation(new Conversation("Serwer"));
+            ConversationSingleton.getConversationSingleton().addConversation(new Conversation("jackon"));
+            ConversationSingleton.getConversationSingleton().addConversation(new Conversation("kacol"));
+            ConversationSingleton.getConversationSingleton().addConversation(new Conversation("elo"));
             try{
                 serverSingleton.createConnection(ipTextField.getText(),Integer.parseInt(portTextField.getText()), loginTextField.getText(), psswdTextField.getText());
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../conversationSelectWindow/conversationSelect.fxml"));
@@ -52,16 +60,19 @@ public class Controller implements Initializable{
                 stage.initModality(Modality.APPLICATION_MODAL);
                 stage.initStyle(StageStyle.DECORATED);
                 stage.setResizable(true);
-                stage.setScene(new Scene(root, 450, 600));
+                Scene scene = new Scene(root, 400, 400);
+                scene.getStylesheets().add(getClass().getResource("../conversationSelectWindow/conversationSelect.css").toExternalForm());
+                stage.setScene(scene);
                 stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
                     public void handle(WindowEvent we) {
                         System.out.println("Stage is closing");
                         serverSingleton.closeSocket();
                         System.out.println("socket closed");
+                        ConversationSingleton.getConversationSingleton().setConversationList(new ArrayList<Conversation>());
+                        MessageWindowSingleton.getMessageWindowSingleton().closeMessageWindows();
                     }
                 });
                 stage.showAndWait();
-
             }catch(Exception ex) {
                 System.out.println(ex);
             }

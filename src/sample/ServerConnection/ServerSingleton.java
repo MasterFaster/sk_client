@@ -108,8 +108,12 @@ public class ServerSingleton {
         int bytes = -1;
 
         try{
+            //System.out.println("kurwa");
+            //if(is.available() > 0)
             bytes = is.read(buffer);
+            //System.out.println("pizda");
             String inputMsg = new String(buffer);
+
             if(inputMsg.substring(0,2).equals("04")){    //information if login is successful
                 System.out.println("Logging successful");
             }
@@ -120,6 +124,7 @@ public class ServerSingleton {
                 String incomingLogin = inputMsg.substring(2,inputMsg.indexOf(";"));
                 System.out.println("msg from: " + incomingLogin);
                 inputMsg = inputMsg.substring(inputMsg.indexOf(";")+1, inputMsg.length());
+                inputMsg = inputMsg.replace("\n","");
                 System.out.println(inputMsg);
                 try{
                     Message actualMessage = new Message(incomingLogin, inputMsg);
@@ -147,7 +152,10 @@ public class ServerSingleton {
         }catch(SocketTimeoutException ex){
             //ex.printStackTrace();
         }catch(Exception ex){
-            ex.printStackTrace();
+            if(socketOpen) {
+                ex.printStackTrace();
+            }
+
         }
         return bytes;
     }

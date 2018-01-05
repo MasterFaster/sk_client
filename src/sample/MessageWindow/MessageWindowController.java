@@ -2,6 +2,7 @@ package sample.MessageWindow;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -22,7 +23,11 @@ public class MessageWindowController implements Initializable{
 
     private OutputStream os;
     private InputStream is;
+    @FXML
+    public Label friendNameLabel;
+    @FXML
     public TextArea historyTextField;
+    @FXML
     public TextField msgTextField;
     private Socket socket;
     //private ReadMessageThread readMessageThread;
@@ -32,6 +37,7 @@ public class MessageWindowController implements Initializable{
     @Override
     public void initialize(URL location, ResourceBundle resources){
         historyTextField.setEditable(false);
+        historyTextField.setFocusTraversable(false);
         socket = ServerSingleton.getServerSingleton().getSocket();
         try {
             socket.setSoTimeout(200);
@@ -41,7 +47,7 @@ public class MessageWindowController implements Initializable{
             ex.printStackTrace();
         }
 
-        readMsgs(); //???
+        //readMsgs(); //???
 //        ObservableList<Message> history = FXCollections.observableArrayList(conversation.getHistory());
 //        history.addListener((ListChangeListener.Change<? extends Message> c) ->{
 //            readMsgs();
@@ -57,7 +63,7 @@ public class MessageWindowController implements Initializable{
             }
         }
         for(Message msg : conversation.getHistory()){
-            historyTextField.appendText("\n" +msg.getAuthor()+" " + msg.getMessage());
+            historyTextField.appendText(msg.getAuthor()+": " + msg.getMessage() + "\n");
         }
     }
 
@@ -66,15 +72,15 @@ public class MessageWindowController implements Initializable{
     }
 
     public void updateHistoryTextField(String author, String message){
-        historyTextField.appendText("\n" + author + " " +message);
+        historyTextField.appendText(author + " " +message + "\n");
         //historyTextField.
         System.out.println("aktualizacja textFielda");
     }
 
     public void sendMsg() {
         ServerSingleton.getServerSingleton().sendMessage(msgTextField.getText(),friendLogin);
-        historyTextField.appendText("\n"+"me " +msgTextField.getText());
-        conversation.getHistory().add(new Message("me: ", msgTextField.getText()));
+        historyTextField.appendText("me: " + msgTextField.getText() + "\n");
+        conversation.getHistory().add(new Message("me", msgTextField.getText()));
     }
 
     public void clearMsgs() {
@@ -82,7 +88,7 @@ public class MessageWindowController implements Initializable{
     }
 
     public void addMsg(Message msg){
-        historyTextField.appendText("\n" + msg.getAuthor() + ": " + msg.getMessage());
+        historyTextField.appendText(msg.getAuthor() + ": " + msg.getMessage() + "\n");
     }
 
     public void readMsgs() {
@@ -93,7 +99,7 @@ public class MessageWindowController implements Initializable{
             for(Conversation conversation : ConversationSingleton.getConversationSingleton().getConversationList()){
                 if(conversation.getFriendLogin().equals(friendLogin)){
                     for(Message msg : conversation.getHistory()){
-                        historyTextField.appendText("\n" + msg.getAuthor() + ": " + msg.getMessage());
+                        historyTextField.appendText(msg.getAuthor() + ": " + msg.getMessage() + "\n");
                     }
                 }
             }
@@ -102,10 +108,9 @@ public class MessageWindowController implements Initializable{
         }
     }
 
-    @FXML
     public void closeWindow(){
         Stage stage = (Stage) historyTextField.getScene().getWindow();
-        //readMessageThread.stop();
         stage.close();
     }
+
 }

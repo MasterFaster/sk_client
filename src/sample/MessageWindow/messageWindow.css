@@ -12,11 +12,11 @@
     -fx-background-color: linear-gradient(#61a2b1, #2A5058);
     -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
 }
-#createNewAccount-text {
-   -fx-font-size: 25px;
-   -fx-font-family: "Arial Narrow";
-   -fx-fill: #818181;
-   -fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );
+#friendLabel-text {
+    -fx-font-size: 32px;
+    -fx-font-family: "Arial Black";
+    -fx-fill: #818181;
+    -fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );
 }
 .label {
     -fx-font-size: 16px;
@@ -26,4 +26,5 @@
 }
 .root {
      -fx-background-image: url("background1.jpg");
+
 }

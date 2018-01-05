@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
@@ -9,6 +10,11 @@
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.MessageWindow.MessageWindowController">
    <children>
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+         <children>
+            <Label id="friendLabel-text" fx:id="friendNameLabel" text="Friend" />
+         </children>
+      </HBox>
       <TextArea fx:id="historyTextField" prefHeight="275.0" prefWidth="600.0" />
       <TextField fx:id="msgTextField" prefHeight="56.0" prefWidth="600.0" />
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
@@ -19,8 +25,6 @@
                   <Insets left="100.0" />
                </HBox.margin>
             </Button>
-            <Button mnemonicParsing="false" onAction="#readMsgs" text="Button" />
-            <Button mnemonicParsing="false" onAction="#closeWindow" text="Close" />
          </children>
       </HBox>
    </children>
