@@ -30,7 +30,7 @@ public class MessageWindowSingleton {
             @Override
             public void run() {
                 System.out.println("Creating new Message Window for: " + friendLogin);
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("MessageWindow.fxml"));
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("sample/MessageWindow/MessageWindow.fxml"));
                 try {
                     Parent root = (Parent) fxmlLoader.load();
                     MessageWindowController messageWindowController = fxmlLoader.getController();
@@ -47,7 +47,7 @@ public class MessageWindowSingleton {
                     stage.initStyle(StageStyle.DECORATED);
                     stage.setResizable(true);
                     Scene scene = new Scene(root, 300, 350);
-                    scene.getStylesheets().add(getClass().getResource("messageWindow.css").toExternalForm());
+                    scene.getStylesheets().add(getClass().getClassLoader().getResource("sample/MessageWindow/messageWindow.css").toExternalForm());
                     stage.setScene(scene);
                     stage.showAndWait();
                     messageWindowControllers.remove(messageWindowController);

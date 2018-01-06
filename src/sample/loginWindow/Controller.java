@@ -57,7 +57,9 @@ public class Controller implements Initializable{
                     ConversationSingleton.getConversationSingleton().addConversation(new Conversation("jackon"));
                     ConversationSingleton.getConversationSingleton().addConversation(new Conversation("kacol"));
                     ConversationSingleton.getConversationSingleton().addConversation(new Conversation("elo"));
-                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../conversationSelectWindow/conversationSelect.fxml"));
+                    //FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../conversationSelectWindow/conversationSelect.fxml"));
+                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader()
+                            .getResource("sample/conversationSelectWindow/conversationSelect.fxml"));
                     ConversationSelectController conversationSelectController = fxmlLoader.getController();
                     Parent root = (Parent) fxmlLoader.load();
                     Stage stage = new Stage();
@@ -68,7 +70,7 @@ public class Controller implements Initializable{
                     stage.initStyle(StageStyle.DECORATED);
                     stage.setResizable(true);
                     Scene scene = new Scene(root, 400, 400);
-                    scene.getStylesheets().add(getClass().getResource("../conversationSelectWindow/conversationSelect.css").toExternalForm());
+                    scene.getStylesheets().add(getClass().getClassLoader().getResource("sample/conversationSelectWindow/conversationSelect.css").toExternalForm());
                     stage.setScene(scene);
                     stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
                         public void handle(WindowEvent we) {
@@ -100,7 +102,7 @@ public class Controller implements Initializable{
     @FXML
     public void createAccount(){
         try{
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../creatingAccountWindow/creatingAccountWindow.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("sample/creatingAccountWindow/creatingAccountWindow.fxml"));
             Parent root = (Parent)fxmlLoader.load();
             Stage stage = new Stage();
             stage.setTitle("Creating new account");
@@ -110,7 +112,7 @@ public class Controller implements Initializable{
             stage.initStyle(StageStyle.DECORATED);
             stage.setResizable(false);
             Scene scene =new Scene(root, 300, 275);
-            scene.getStylesheets().add(getClass().getResource("../creatingAccountWindow/creatingAccount.css").toExternalForm());
+            scene.getStylesheets().add(getClass().getClassLoader().getResource("sample/creatingAccountWindow/creatingAccount.css").toExternalForm());
             stage.setScene(scene);
             stage.showAndWait();
         }catch(Exception ex) {

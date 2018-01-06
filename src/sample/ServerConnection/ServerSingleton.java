@@ -13,6 +13,9 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
+import java.nio.charset.Charset;
+import java.nio.charset.CharsetDecoder;
+import java.nio.charset.CharsetEncoder;
 import java.util.NoSuchElementException;
 
 
@@ -28,6 +31,7 @@ public class ServerSingleton {
     private boolean socketOpen = false;
     private boolean isLogged = false;
     private ReadMessageThread readMessageThread;
+    private static final String CODING = "Windows-1252";  //Windows-1252    ISO-8859-1"
 
     private ServerSingleton() { }
 
@@ -65,7 +69,7 @@ public class ServerSingleton {
             os = socket.getOutputStream();
             System.out.println("Socket created, ip: "+ ipAddr + " port: " +port);
             String message = "03"+login+";"+psswd+";";
-            os.write(message.getBytes());
+            os.write(message.getBytes(CODING));
             System.out.println("message is send");
             socket.close();
             socketOpen = false;
@@ -130,10 +134,9 @@ public class ServerSingleton {
         int bytes = -1;
 
         try{
-            //System.out.println("kurwa");
+
             //if(is.available() > 0)
             bytes = is.read(buffer);
-            //System.out.println("pizda");
             String inputMsg = new String(buffer);
 
             if(inputMsg.substring(0,2).equals("04")){    //information if login is successful
@@ -143,6 +146,11 @@ public class ServerSingleton {
             if(inputMsg.substring(0,2).equals("05")){    //information if login is successful
                 isLogged = false;
                 System.out.println("Logging failed");
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("WARNING");
+                alert.setHeaderText("Wrong Password");
+                alert.setContentText("Password is incorrect for this user");
+                alert.showAndWait();
             }
             if(inputMsg.substring(0,2).equals("02")){    //incoming message from someone
                 String incomingLogin = inputMsg.substring(2,inputMsg.indexOf(";"));

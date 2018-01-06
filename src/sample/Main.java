@@ -14,10 +14,10 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("loginWindow/sample.fxml"));
+        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("sample/loginWindow/sample.fxml"));
         primaryStage.setTitle("Login window");
         Scene scene =new Scene(root, 300, 275);
-        scene.getStylesheets().add(getClass().getResource("loginWindow/login.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getClassLoader().getResource("sample/loginWindow/login.css").toExternalForm());
         Image icon = new Image("sample/loginIcon.jpg");
         primaryStage.getIcons().add(icon);
         primaryStage.setScene(scene);
