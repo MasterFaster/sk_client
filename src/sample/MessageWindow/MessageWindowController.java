@@ -78,9 +78,13 @@ public class MessageWindowController implements Initializable{
     }
 
     public void sendMsg() {
-        ServerSingleton.getServerSingleton().sendMessage(msgTextField.getText(),friendLogin);
-        historyTextField.appendText("me: " + msgTextField.getText() + "\n");
-        conversation.getHistory().add(new Message("me", msgTextField.getText()));
+        if(!msgTextField.getText().equals("")) {
+            ServerSingleton.getServerSingleton().sendMessage(msgTextField.getText(), friendLogin);
+            historyTextField.appendText("me: " + msgTextField.getText() + "\n");
+            conversation.getHistory().add(new Message("me", msgTextField.getText()));
+            msgTextField.setText("");
+        }
+        //msgTextField.setFocusTraversable(false);
     }
 
     public void clearMsgs() {

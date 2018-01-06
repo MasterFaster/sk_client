@@ -1,5 +1,6 @@
 package sample.ServerConnection;
 
+import javafx.scene.control.Alert;
 import sample.Conversation.Conversation;
 import sample.Conversation.ConversationSingleton;
 import sample.Conversation.Message;
@@ -10,6 +11,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.util.NoSuchElementException;
 
@@ -177,6 +179,12 @@ public class ServerSingleton {
 
         }catch(SocketTimeoutException ex){
             //ex.printStackTrace();
+        }catch(SocketException ex){
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("WARNING");
+            alert.setHeaderText("Something went wrong");
+            alert.setContentText("Try one more time, previous user is still not logged out");
+            alert.showAndWait();
         }catch(Exception ex){
             if(socketOpen) {
                 ex.printStackTrace();

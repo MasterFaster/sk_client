@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -20,6 +21,7 @@ import sample.ServerConnection.ServerSingleton;
 import sample.conversationSelectWindow.ConversationSelectController;
 
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
@@ -52,7 +54,6 @@ public class Controller implements Initializable{
             try{
                 serverSingleton.createConnection(ipTextField.getText(),Integer.parseInt(portTextField.getText()), loginTextField.getText(), psswdTextField.getText());
                 if(serverSingleton.getIsLogged()) {
-                    ConversationSingleton.getConversationSingleton().addConversation(new Conversation("Serwer"));
                     ConversationSingleton.getConversationSingleton().addConversation(new Conversation("jackon"));
                     ConversationSingleton.getConversationSingleton().addConversation(new Conversation("kacol"));
                     ConversationSingleton.getConversationSingleton().addConversation(new Conversation("elo"));
@@ -72,8 +73,8 @@ public class Controller implements Initializable{
                     stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
                         public void handle(WindowEvent we) {
                             System.out.println("Stage is closing");
-                            serverSingleton.closeSocket();
                             serverSingleton.stopReadMessageThread();
+                            serverSingleton.closeSocket();
                             System.out.println("socket closed");
                             ConversationSingleton.getConversationSingleton().setConversationList(new ArrayList<Conversation>());
                             MessageWindowSingleton.getMessageWindowSingleton().closeMessageWindows();
@@ -82,6 +83,12 @@ public class Controller implements Initializable{
                     serverSingleton.startReadMessageThread();
                     stage.showAndWait();
                 }
+            }catch(UnknownHostException ex){
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("WARNING");
+                alert.setHeaderText("Unknown Host");
+                alert.setContentText("This host is unreachable");
+                alert.showAndWait();
             }catch(Exception ex) {
                 System.out.println(ex);
             }
