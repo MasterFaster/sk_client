@@ -12,12 +12,9 @@ public class Conversation {
     private String friendLogin;
     private ArrayList<Message> history = new ArrayList<>();
 
-    public Conversation(){
-       // history = FXCollections.observableArrayList();
-    }
+    public Conversation(){}
 
     public Conversation(String friendLogin){
-        this();
         this.friendLogin = friendLogin;
     }
 

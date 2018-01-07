@@ -43,8 +43,6 @@ public class MessageWindowSingleton {
                     Image icon = new Image("sample/MessageWindow/conversationIcon.png");
                     stage.getIcons().add(icon);
                     stage.setResizable(false);
-                    //stage.initModality(Modality.APPLICATION_MODAL);
-                    //stage.initStyle(StageStyle.UNDECORATED);
                     stage.initStyle(StageStyle.DECORATED);
                     stage.setResizable(true);
                     Scene scene = new Scene(root, 300, 350);

@@ -14,6 +14,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
+import sample.AlertWindows.AlertWindow;
 import sample.Conversation.Conversation;
 import sample.Conversation.ConversationSingleton;
 import sample.MessageWindow.MessageWindowSingleton;
@@ -45,14 +46,6 @@ public class Controller implements Initializable{
         portTextField.setText("22580");
     }
 
-    private void showWarningWindow(String header, String content){
-        Alert alert = new Alert(Alert.AlertType.WARNING);
-        alert.setTitle("WARNING");
-        alert.setHeaderText(header);
-        alert.setContentText(content);
-        alert.showAndWait();
-    }
-
     /**
      * action when "Connect" button is pressed
      */
@@ -66,7 +59,6 @@ public class Controller implements Initializable{
                     ConversationSingleton.getConversationSingleton().addConversation(new Conversation("jackon"));
                     ConversationSingleton.getConversationSingleton().addConversation(new Conversation("kacol"));
                     ConversationSingleton.getConversationSingleton().addConversation(new Conversation("elo"));
-                    //FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../conversationSelectWindow/conversationSelect.fxml"));
                     FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader()
                             .getResource("sample/conversationSelectWindow/conversationSelect.fxml"));
                     ConversationSelectController conversationSelectController = fxmlLoader.getController();
@@ -95,15 +87,15 @@ public class Controller implements Initializable{
                     stage.showAndWait();
                 }
             }catch(SocketTimeoutException ex){
-                showWarningWindow("Wrong port", "There is no host with such port and ip");
+                AlertWindow.showWarningWindow("Wrong port", "There is no host with such port and ip");
             }catch(NumberFormatException ex){
-                showWarningWindow("Wrong port", "Check if port is an integer");
+                AlertWindow.showWarningWindow("Wrong port", "Check if port is an integer");
             }catch(IllegalArgumentException ex){
-                showWarningWindow("Wrong port", "Port out of range");
+                AlertWindow.showWarningWindow("Wrong port", "Port out of range");
             }catch(UnknownHostException ex){
-                showWarningWindow("Unknown Host", "This host is unreachable");
+                AlertWindow.showWarningWindow("Unknown Host", "This host is unreachable");
             }catch(Exception ex) {
-                showWarningWindow("WARNING", "Something went wrong, try again later");
+                AlertWindow.showWarningWindow("WARNING", "Something went wrong, try again later");
                 System.out.println(ex);
             }
     }

@@ -46,12 +46,6 @@ public class MessageWindowController implements Initializable{
         }catch(Exception ex){
             ex.printStackTrace();
         }
-
-        //readMsgs(); //???
-//        ObservableList<Message> history = FXCollections.observableArrayList(conversation.getHistory());
-//        history.addListener((ListChangeListener.Change<? extends Message> c) ->{
-//            readMsgs();
-//        });
     }
 
     public void setFriendLogin(String friendLogin){
@@ -71,11 +65,6 @@ public class MessageWindowController implements Initializable{
         return friendLogin;
     }
 
-    public void updateHistoryTextField(String author, String message){
-        historyTextField.appendText(author + " " +message + "\n");
-        //historyTextField.
-        System.out.println("aktualizacja textFielda");
-    }
 
     public void sendMsg() {
         if(!msgTextField.getText().equals("")) {
@@ -84,7 +73,6 @@ public class MessageWindowController implements Initializable{
             conversation.getHistory().add(new Message("me", msgTextField.getText()));
             msgTextField.setText("");
         }
-        //msgTextField.setFocusTraversable(false);
     }
 
     public void clearMsgs() {
@@ -93,23 +81,6 @@ public class MessageWindowController implements Initializable{
 
     public void addMsg(Message msg){
         historyTextField.appendText(msg.getAuthor() + ": " + msg.getMessage() + "\n");
-    }
-
-    public void readMsgs() {
-        try {
-            //byte[] buffer = new byte[100];
-            //int byteNumber = is.read(buffer);
-            //String serverMessage = new String(buffer);
-            for(Conversation conversation : ConversationSingleton.getConversationSingleton().getConversationList()){
-                if(conversation.getFriendLogin().equals(friendLogin)){
-                    for(Message msg : conversation.getHistory()){
-                        historyTextField.appendText(msg.getAuthor() + ": " + msg.getMessage() + "\n");
-                    }
-                }
-            }
-        }catch(Exception ex){
-            ex.printStackTrace();
-        }
     }
 
     public void closeWindow(){

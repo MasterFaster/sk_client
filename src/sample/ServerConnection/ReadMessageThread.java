@@ -12,41 +12,20 @@ import static java.lang.Thread.sleep;
  */
 public class ReadMessageThread extends Thread {
 
-    //private MessageWindowController messageWindowController = null;
+
 
     public ReadMessageThread(){
     }
 
-    public void setConversationController(MessageWindowController messageWindowController){
-        //this.messageWindowController = messageWindowController;
-    }
-
     @Override
     public void run() {
-        /*try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("MessageWindow.fxml"));
-            Parent root = (Parent) fxmlLoader.load();
-            this.messageWindowController = fxmlLoader.getController();
-        }catch(Exception ex){
-            ex.printStackTrace();
-        }*/
-        Socket socket = ServerSingleton.getServerSingleton().getSocket();
-        InputStream is = null;
         System.out.println("Reading message thread is running");
-        String serverMessage="";
         while (true) {
             if(!ServerSingleton.getServerSingleton().getSocketOpen()){
                 break;
             }
             byte[] buffer = new byte[100];
             int byteNumber = ServerSingleton.getServerSingleton().getMessage(buffer);
-            //historyTextField.appendText("\n" + serverMessage);
-            //System.out.println(byteNumber);
-           // if(byteNumber != -1) {
-                //serverMessage = new String(buffer);
-                //System.out.println("*" + serverMessage + "*");
-                //messageWindowController.updateHistoryTextField("Serwer",serverMessage);
-            //}
         }
     }
 }
