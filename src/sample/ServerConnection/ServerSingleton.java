@@ -64,7 +64,8 @@ public class ServerSingleton {
      */
     public void createAccount(String ipAddr, int port, String login, String psswd){
         try {
-            socket = new Socket(ipAddr, port);
+            socket = new Socket();
+            socket.connect(new InetSocketAddress(ipAddr, port), 1000);
             socketOpen = true;
             is = socket.getInputStream();
             os = socket.getOutputStream();

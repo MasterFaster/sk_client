@@ -6,9 +6,12 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import sample.AlertWindows.AlertWindow;
 import sample.ServerConnection.ServerSingleton;
 
+import java.net.SocketTimeoutException;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.util.ResourceBundle;
 
 
@@ -33,28 +36,39 @@ public class CreatingAccountWindowController implements Initializable{
         portTextField.setText("22580");
     }
 
+    public boolean checkCorrectness(String text){
+        if(!text.contains(";") && !text.contains("ą")
+                && !text.contains("ę") && !text.contains("ź")
+                && !text.contains("ż") && !text.contains("ó")
+                && !text.contains("ć") && !text.contains("ś")
+                && !text.contains("ń") && !text.contains("ł")){
+            return true;
+        }
+        return false;
+    }
+
     @FXML
     public void createAccount(){
         System.out.println("Creating account:");
         System.out.println("Login: " + loginTextField.getText());
         System.out.println("Password: " + psswdTextField.getText());
-
-        if(psswdTextField.getText().equals(psswdSecTextField.getText()) && !loginTextField.getText().contains(";")
-                && !psswdTextField.getText().contains(";") && !loginTextField.getText().contains("ą")
-                && !loginTextField.getText().contains("ę") && !loginTextField.getText().contains("ź")
-                && !loginTextField.getText().contains("ż") && !loginTextField.getText().contains("ó")
-                && !loginTextField.getText().contains("ć") && !loginTextField.getText().contains("ś")
-                && !loginTextField.getText().contains("ń") && !loginTextField.getText().contains("ł")) {
-            ServerSingleton.getServerSingleton().createAccount(ipTextField.getText(),
-                    Integer.parseInt(portTextField.getText()), loginTextField.getText(), psswdTextField.getText());
-            Stage stage = (Stage) loginTextField.getScene().getWindow();
-            stage.close();
-        }else{
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("WARNING");
-            alert.setHeaderText("Something went wrong");
-            alert.setContentText("Passwords are different");
-            alert.showAndWait();
+        try {
+            if (psswdTextField.getText().equals(psswdSecTextField.getText()) && checkCorrectness(psswdSecTextField.getText())
+                    && checkCorrectness(loginTextField.getText())) {
+                ServerSingleton.getServerSingleton().createAccount(ipTextField.getText(),
+                        Integer.parseInt(portTextField.getText()), loginTextField.getText(), psswdTextField.getText());
+                Stage stage = (Stage) loginTextField.getScene().getWindow();
+                stage.close();
+            } else {
+                AlertWindow.showWarningWindow("Something went wrong", "Passwords are different or login/password contains not only english letters or digits");
+            }
+        }catch(NumberFormatException ex){
+            AlertWindow.showWarningWindow("Wrong port", "Check if port is an integer");
+        }catch(IllegalArgumentException ex){
+            AlertWindow.showWarningWindow("Wrong port", "Port out of range");
+        }catch(Exception ex) {
+            AlertWindow.showWarningWindow("WARNING", "Something went wrong, try again later");
+            System.out.println(ex);
         }
     }
 }
