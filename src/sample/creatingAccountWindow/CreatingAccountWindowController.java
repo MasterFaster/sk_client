@@ -29,7 +29,7 @@ public class CreatingAccountWindowController implements Initializable{
     public void initialize(URL location, ResourceBundle resources){
         ipTextField.setFocusTraversable(false);
         portTextField.setFocusTraversable(false);
-        ipTextField.setText("192.168.1.117");
+        ipTextField.setText("25.85.97.88");
         portTextField.setText("22580");
     }
 

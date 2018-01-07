@@ -10,9 +10,7 @@ import sample.MessageWindow.MessageWindowSingleton;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.Socket;
-import java.net.SocketException;
-import java.net.SocketTimeoutException;
+import java.net.*;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
 import java.nio.charset.CharsetEncoder;
@@ -35,8 +33,18 @@ public class ServerSingleton {
 
     private ServerSingleton() { }
 
+    private void showWarningWindow(String header, String content){
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("WARNING");
+        alert.setHeaderText(header);
+        alert.setContentText(content);
+        alert.showAndWait();
+    }
+
     public void createConnection(String ipAddr, int port, String login, String psswd) throws Exception{
-            socket = new Socket(ipAddr, port);
+           // socket = new Socket(ipAddr, port);
+            socket = new Socket();
+            socket.connect(new InetSocketAddress(ipAddr, port), 1000);
             socketOpen = true;
             is = socket.getInputStream();
             os = socket.getOutputStream();
@@ -50,6 +58,7 @@ public class ServerSingleton {
             getMessage(buffer);
         }catch(IOException ex){
             socketOpen = false;
+            showWarningWindow("Sending message failed", "Something went wrong while sending message");
             ex.printStackTrace();
         }
     }
@@ -71,11 +80,30 @@ public class ServerSingleton {
             String message = "03"+login+";"+psswd+";";
             os.write(message.getBytes(CODING));
             System.out.println("message is send");
+            byte[] buffer = new byte[50];
+            getMessage(buffer);
             socket.close();
             socketOpen = false;
+        }catch(SocketTimeoutException ex){
+            socketOpen = false;
+            showWarningWindow("Wrong port", "There is no host with such port and ip");
+        }catch(NumberFormatException ex){
+            socketOpen = false;
+            showWarningWindow("Wrong port", "Check if port is an integer");
+        }catch(IllegalArgumentException ex){
+            socketOpen = false;
+            showWarningWindow("Wrong port", "Port out of range");
+        }catch(UnknownHostException ex){
+            socketOpen = false;
+            showWarningWindow("Unknown Host", "This host is unreachable");
         }catch(IOException ex){
+            showWarningWindow("WARNING", "Input is incorrect");
             socketOpen = false;
             ex.printStackTrace();
+        }catch(Exception ex) {
+            socketOpen = false;
+            showWarningWindow("WARNING", "Something went wrong, try again later");
+            System.out.println(ex);
         }
     }
 
@@ -86,8 +114,10 @@ public class ServerSingleton {
             socketOpen = false;
             try {
                 socket.close();
-            } catch (IOException e) {
-                e.printStackTrace();
+            } catch(Exception ex) {
+                socketOpen = false;
+                //showWarningWindow("WARNING", "Something went wrong, while closing connection");
+                System.out.println(ex);
             }
         }
     }
@@ -122,7 +152,9 @@ public class ServerSingleton {
             message = "01"+login+";"+message+"\n";
             os.write(message.getBytes());
             System.out.println("message is send");
-        }catch(IOException ex){
+        }catch(SocketException ex){
+            showWarningWindow("Message can't be send","Something went wrong when sending message");
+        }catch(Exception ex){
             ex.printStackTrace();
         }
     }
@@ -146,11 +178,16 @@ public class ServerSingleton {
             if(inputMsg.substring(0,2).equals("05")){    //information if login is successful
                 isLogged = false;
                 System.out.println("Logging failed");
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("WARNING");
-                alert.setHeaderText("Wrong Password");
-                alert.setContentText("Password is incorrect for this user");
-                alert.showAndWait();
+                showWarningWindow("Wrong Password", "Password is incorrect for this user");
+            }
+            if(inputMsg.substring(0,2).equals("06")){    //information if creating account is successful
+                isLogged = false;
+                System.out.println("Creating account successful");
+            }
+            if(inputMsg.substring(0,2).equals("07")){    //information if creating account is successful
+                isLogged = false;
+                System.out.println("Creating account failed");
+                showWarningWindow("Creating account failed", "Account with such login already exists");
             }
             if(inputMsg.substring(0,2).equals("02")){    //incoming message from someone
                 String incomingLogin = inputMsg.substring(2,inputMsg.indexOf(";"));
@@ -177,7 +214,7 @@ public class ServerSingleton {
                         ifMessageWindowControllerFound = true;
                     }
                 }
-                System.out.println("IF MESSAGEWINDOWCONTROLLER FOUND: " + ifMessageWindowControllerFound);
+                //System.out.println("IF MESSAGEWINDOWCONTROLLER FOUND: " + ifMessageWindowControllerFound);
                 if(!ifMessageWindowControllerFound){
                     MessageWindowSingleton.getMessageWindowSingleton().createMessageWindow(incomingLogin);
                 }
@@ -187,17 +224,13 @@ public class ServerSingleton {
 
         }catch(SocketTimeoutException ex){
             //ex.printStackTrace();
+            showWarningWindow("Something went wrong", "Connection can't be established");
         }catch(SocketException ex){
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("WARNING");
-            alert.setHeaderText("Something went wrong");
-            alert.setContentText("Try one more time, previous user is still not logged out");
-            alert.showAndWait();
+            showWarningWindow("Something went wrong", "Try one more time, previous user is still not logged out");
         }catch(Exception ex){
             if(socketOpen) {
                 ex.printStackTrace();
             }
-
         }
         return bytes;
     }

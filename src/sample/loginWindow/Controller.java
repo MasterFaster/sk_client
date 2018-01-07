@@ -20,6 +20,7 @@ import sample.MessageWindow.MessageWindowSingleton;
 import sample.ServerConnection.ServerSingleton;
 import sample.conversationSelectWindow.ConversationSelectController;
 
+import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -40,8 +41,16 @@ public class Controller implements Initializable{
     public void initialize(URL location, ResourceBundle resources){
         ipTextField.setFocusTraversable(false);
         portTextField.setFocusTraversable(false);
-        ipTextField.setText("192.168.1.117");
+        ipTextField.setText("25.85.97.88");
         portTextField.setText("22580");
+    }
+
+    private void showWarningWindow(String header, String content){
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("WARNING");
+        alert.setHeaderText(header);
+        alert.setContentText(content);
+        alert.showAndWait();
     }
 
     /**
@@ -85,13 +94,16 @@ public class Controller implements Initializable{
                     serverSingleton.startReadMessageThread();
                     stage.showAndWait();
                 }
+            }catch(SocketTimeoutException ex){
+                showWarningWindow("Wrong port", "There is no host with such port and ip");
+            }catch(NumberFormatException ex){
+                showWarningWindow("Wrong port", "Check if port is an integer");
+            }catch(IllegalArgumentException ex){
+                showWarningWindow("Wrong port", "Port out of range");
             }catch(UnknownHostException ex){
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("WARNING");
-                alert.setHeaderText("Unknown Host");
-                alert.setContentText("This host is unreachable");
-                alert.showAndWait();
+                showWarningWindow("Unknown Host", "This host is unreachable");
             }catch(Exception ex) {
+                showWarningWindow("WARNING", "Something went wrong, try again later");
                 System.out.println(ex);
             }
     }
