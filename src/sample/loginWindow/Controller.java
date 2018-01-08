@@ -58,7 +58,6 @@ public class Controller implements Initializable{
                 if(serverSingleton.getIsLogged()) {
                     ConversationSingleton.getConversationSingleton().addConversation(new Conversation("jackon"));
                     ConversationSingleton.getConversationSingleton().addConversation(new Conversation("kacol"));
-                    ConversationSingleton.getConversationSingleton().addConversation(new Conversation("elo"));
                     FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader()
                             .getResource("sample/conversationSelectWindow/conversationSelect.fxml"));
                     ConversationSelectController conversationSelectController = fxmlLoader.getController();
