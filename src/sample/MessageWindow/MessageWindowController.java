@@ -6,6 +6,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import sample.AlertWindows.AlertWindow;
 import sample.Conversation.Conversation;
 import sample.Conversation.ConversationSingleton;
 import sample.Conversation.Message;
@@ -67,11 +68,13 @@ public class MessageWindowController implements Initializable{
 
 
     public void sendMsg() {
-        if(!msgTextField.getText().equals("")) {
+        if(!msgTextField.getText().equals("") && !msgTextField.getText().contains(";")) {
             ServerSingleton.getServerSingleton().sendMessage(msgTextField.getText(), friendLogin);
             historyTextField.appendText("me: " + msgTextField.getText() + "\n");
             conversation.getHistory().add(new Message("me", msgTextField.getText()));
             msgTextField.setText("");
+        }else{
+            AlertWindow.showWarningWindow("Wrong message", "Your massage can't be clear and can't contain ';'");
         }
     }
 
