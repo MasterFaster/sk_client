@@ -29,7 +29,7 @@ public class MessageWindowSingleton {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                System.out.println("Creating new Message Window for: " + friendLogin);
+                //System.out.println("Creating new Message Window for: " + friendLogin);
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("sample/MessageWindow/MessageWindow.fxml"));
                 try {
                     Parent root = (Parent) fxmlLoader.load();
@@ -50,9 +50,9 @@ public class MessageWindowSingleton {
                     stage.setScene(scene);
                     stage.showAndWait();
                     messageWindowControllers.remove(messageWindowController);
-                    System.out.println(stage);
+                    //System.out.println(stage);
                 } catch (Exception ex) {
-                    System.out.println(ex);
+                    //System.out.println(ex);
                 }
             }
         });

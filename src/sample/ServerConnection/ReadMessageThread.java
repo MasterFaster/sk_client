@@ -19,7 +19,8 @@ public class ReadMessageThread extends Thread {
 
     @Override
     public void run() {
-        System.out.println("Reading message thread is running");
+        //ServerSingleton.getServerSingleton().getSocket().setSoTimeout(1000);
+        //System.out.println("Reading message thread is running");
         while (true) {
             if(!ServerSingleton.getServerSingleton().getSocketOpen()){
                 break;

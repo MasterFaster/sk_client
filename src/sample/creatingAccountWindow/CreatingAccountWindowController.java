@@ -49,9 +49,9 @@ public class CreatingAccountWindowController implements Initializable{
 
     @FXML
     public void createAccount(){
-        System.out.println("Creating account:");
-        System.out.println("Login: " + loginTextField.getText());
-        System.out.println("Password: " + psswdTextField.getText());
+        //System.out.println("Creating account:");
+        //System.out.println("Login: " + loginTextField.getText());
+        //System.out.println("Password: " + psswdTextField.getText());
         try {
             if (psswdTextField.getText().equals(psswdSecTextField.getText()) && checkCorrectness(psswdSecTextField.getText())
                     && checkCorrectness(loginTextField.getText())) {
@@ -68,7 +68,7 @@ public class CreatingAccountWindowController implements Initializable{
             AlertWindow.showWarningWindow("Wrong port", "Port out of range");
         }catch(Exception ex) {
             AlertWindow.showWarningWindow("WARNING", "Something went wrong, try again later");
-            System.out.println(ex);
+            //System.out.println(ex);
         }
     }
 }

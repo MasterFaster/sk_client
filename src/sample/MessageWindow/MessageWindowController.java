@@ -40,7 +40,7 @@ public class MessageWindowController implements Initializable{
         historyTextField.setFocusTraversable(false);
         socket = ServerSingleton.getServerSingleton().getSocket();
         try {
-            socket.setSoTimeout(200);
+            socket.setSoTimeout(600);
             os = socket.getOutputStream();
             is = socket.getInputStream();
         }catch(Exception ex){

@@ -51,7 +51,7 @@ public class Controller implements Initializable{
      */
     @FXML
     public void connectToServer() {
-            System.out.println("Trying to connect...");
+            //System.out.println("Trying to connect...");
             ServerSingleton serverSingleton = ServerSingleton.getServerSingleton();
             try{
                 serverSingleton.createConnection(ipTextField.getText(),Integer.parseInt(portTextField.getText()), loginTextField.getText(), psswdTextField.getText());
@@ -75,10 +75,10 @@ public class Controller implements Initializable{
                     stage.setScene(scene);
                     stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
                         public void handle(WindowEvent we) {
-                            System.out.println("Stage is closing");
+                            //System.out.println("Stage is closing");
                             serverSingleton.stopReadMessageThread();
                             serverSingleton.closeSocket();
-                            System.out.println("socket closed");
+                            //System.out.println("socket closed");
                             ConversationSingleton.getConversationSingleton().setConversationList(new ArrayList<Conversation>());
                             MessageWindowSingleton.getMessageWindowSingleton().closeMessageWindows();
                         }
@@ -96,7 +96,7 @@ public class Controller implements Initializable{
                 AlertWindow.showWarningWindow("Unknown Host", "This host is unreachable");
             }catch(Exception ex) {
                 AlertWindow.showWarningWindow("WARNING", "Something went wrong, try again later");
-                System.out.println(ex);
+                //System.out.println(ex);
             }
     }
 
